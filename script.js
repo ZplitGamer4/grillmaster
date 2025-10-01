@@ -131,7 +131,7 @@ document.getElementById("sendWhatsApp").addEventListener("click", ()=>{
     cart.forEach(item => {msg += `- ${item.name} x${item.qty} - $${item.price*item.qty}%0A`});
     let total = cart.reduce((a,b) => a + b.price * b.qty, 0);
     msg += `Total: $${total}%0ADirección: `;
-    const waNumber="5211234567890";
+    const waNumber="528110428724";
     window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
 });
 
@@ -230,3 +230,4 @@ window.deleteProduct = async function(id){
         renderAdminProducts();
     }
 }
+
