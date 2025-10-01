@@ -49,10 +49,10 @@ function updateCartUI() {
     if(window.innerWidth <= 768){
         cartPanel.style.position = "fixed";
         cartPanel.style.width = "80%";
-        cartPanel.style.height = "80%";
-        cartPanel.style.top = "50%";
-        cartPanel.style.left = "50%";
-        cartPanel.style.transform = cartOpen ? "translate(-50%, -50%)" : "translate(-50%, -150%)";
+        cartPanel.style.height = "100%";
+        cartPanel.style.top = "0";
+        cartPanel.style.left = "0";
+        cartPanel.style.transform = cartOpen ? "translateX(0)" : "translateX(100%)";
         cartPanel.style.transition = "transform 0.3s";
         cartToggleBtn.style.display = "block";
     } else {
@@ -75,6 +75,11 @@ closeCartBtn.addEventListener("click", () => {
     cartOpen = false;
     updateCartUI();
 });
+
+// ===== Ventana resize =====
+window.addEventListener("resize", updateCartUI);
+updateCartUI();
+
 
 // ===== Firestore: Cargar productos =====
 async function loadProducts(){
