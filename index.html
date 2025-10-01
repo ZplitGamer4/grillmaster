@@ -10,10 +10,9 @@
 
 <header>
     <h1>🍔 GRILL MASTER</h1>
-    <button id="cartToggleBtn">🛒 Pedido</button> <!-- NUEVO -->
+    <button id="cartToggleBtn">🛒 Pedido</button>
     <button id="adminLoginBtn">Login Admin</button>
 </header>
-
 
 <section class="banner">
     <img id="bannerImg" src="https://raw.githubusercontent.com/ZplitGamer4/mis-imagenes-web/refs/heads/main/Sin%20t%C3%ADtulo.jpg" alt="Hamburguesa">
@@ -29,6 +28,7 @@
 <main>
     <section id="menu" class="menu-section"></section>
     <aside id="cart">
+        <button id="closeCartBtn" class="close-cart">✖</button>
         <h2>🛒 Tu pedido</h2>
         <ul id="cartItems"></ul>
         <p>Total: $<span id="cartTotal">0</span></p>
@@ -61,8 +61,6 @@
     </div>
 </div>
 
-<!-- Firebase -->
 <script type="module" src="script.js"></script>
 </body>
 </html>
-
