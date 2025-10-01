@@ -39,15 +39,14 @@ const viewClientBtn = document.getElementById("viewClientBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const addProductBtn = document.getElementById("addProduct");
 
-// ===== Carrito responsive =====
 const cartPanel = document.getElementById("cart");
+const cartToggleBtn = document.getElementById("cartToggleBtn");
+const closeCartBtn = document.getElementById("closeCartBtn");
 let cartOpen = false;
 
-
-
+// ===== Carrito responsive =====
 function updateCartUI() {
     if(window.innerWidth <= 768){
-        // Móvil: panel flotante
         cartPanel.style.position = "fixed";
         cartPanel.style.width = "80%";
         cartPanel.style.height = "80%";
@@ -57,7 +56,6 @@ function updateCartUI() {
         cartPanel.style.transition = "transform 0.3s";
         cartToggleBtn.style.display = "block";
     } else {
-        // PC: sticky
         cartPanel.style.position = "sticky";
         cartPanel.style.width = "320px";
         cartPanel.style.height = "calc(100vh - 100px)";
@@ -69,19 +67,14 @@ function updateCartUI() {
     }
 }
 
-
-// Modificar los botones para que funcionen en todas las pantallas
 cartToggleBtn.addEventListener("click", () => {
     cartOpen = !cartOpen;
     updateCartUI();
 });
-
 closeCartBtn.addEventListener("click", () => {
     cartOpen = false;
     updateCartUI();
 });
-
-
 
 // ===== Firestore: Cargar productos =====
 async function loadProducts(){
@@ -120,6 +113,7 @@ window.addToCart = function(id){
     else cart.push({...item, qty:1});
     renderCart();
 }
+
 function renderCart(){
     cartItems.innerHTML="";
     let total=0;
@@ -131,8 +125,13 @@ function renderCart(){
         cartItems.appendChild(li);
     });
     cartTotal.innerText = total;
+    updateCartCount();
 }
 window.removeCart=function(i){cart.splice(i,1); renderCart();}
+function updateCartCount() {
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById("cartCount").innerText = totalQty;
+}
 
 // ===== WhatsApp =====
 document.getElementById("sendWhatsApp").addEventListener("click", ()=>{
@@ -141,7 +140,7 @@ document.getElementById("sendWhatsApp").addEventListener("click", ()=>{
     cart.forEach(item => {msg += `- ${item.name} x${item.qty} - $${item.price*item.qty}%0A`});
     let total = cart.reduce((a,b) => a + b.price * b.qty, 0);
     msg += `Total: $${total}%0ADirección: `;
-    const waNumber="5211234567890"; // tu número
+    const waNumber="5211234567890";
     window.open(`https://wa.me/${waNumber}?text=${msg}`, "_blank");
 });
 
@@ -156,26 +155,46 @@ catButtons.forEach(btn=>{
 });
 
 // ===== Panel Admin =====
-adminLoginBtn.addEventListener("click", ()=>adminPanel.classList.remove("hidden"));
-closeAdmin.addEventListener("click", ()=>adminPanel.classList.add("hidden"));
+adminLoginBtn.addEventListener("click", ()=>{
+    adminPanel.classList.remove("hidden");
+    loginForm.style.display = "block";        // mostrar solo login
+    adminContent.style.display = "none";      // ocultar todo lo demás
+});
 
+closeAdmin.addEventListener("click", ()=>{
+    adminPanel.classList.add("hidden");
+});
+
+// ===== Login Admin =====
 loginBtn.addEventListener("click", ()=>{
     const user = document.getElementById("adminUser").value;
     const pass = document.getElementById("adminPass").value;
     if(user==="admin" && pass==="12345"){
         isAdmin = true;
-        loginForm.classList.add("hidden");
-        adminContent.classList.remove("hidden");
+        loginForm.style.display = "none";        // ocultar login
+        adminContent.style.display = "block";    // mostrar todo admin
         renderAdminProducts();
     } else alert("Usuario o contraseña incorrectos");
 });
 
+// ===== Logout Admin =====
 logoutBtn.addEventListener("click", ()=>{
     isAdmin = false;
-    adminContent.classList.add("hidden");
-    loginForm.classList.remove("hidden");
+    adminContent.style.display = "none";       // ocultar todo admin
+    loginForm.style.display = "block";         // mostrar login
     productList.innerHTML="";
 });
+
+// ===== Ver como cliente =====
+viewClientBtn.addEventListener("click", ()=>{
+    adminPanel.classList.add("hidden");        // ocultar panel completo
+});
+
+// ===== Inicialización =====
+adminContent.style.display = "none";           // asegurar que al cargar no se vea nada
+loginForm.style.display = "block";             // solo login visible
+
+
 
 viewClientBtn.addEventListener("click", ()=>adminPanel.classList.add("hidden"));
 
